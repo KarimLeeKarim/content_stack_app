@@ -45,7 +45,7 @@ const Header = ({ children }) => {
     <HeaderBar>
       <Container>
         <HomeButtonContainer>
-          <HomeLink to={"/books"}>
+          <HomeLink to={"#"}>
             <HomeButton>
               <LogoContainer>
                 <Logo src={logo} />
