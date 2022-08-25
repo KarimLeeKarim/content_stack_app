@@ -7,16 +7,22 @@ import ReactPaginate from "react-paginate";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { BOOKS } from './utils/grapQueries.js';
 import './index.css'
+import { pageChanger } from './store/slices/currentPage.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNewListOfBooks } from './store/slices/listOfBookSlice.js';
 
 
 export const Home = () => {
-  const [newData, setNewData] = useState(0)
-  const [pageCount, setPageCount] = useState(0)
+  const perPage = 5;
   const { loading, error, data, fetchMore } = useQuery(BOOKS);
-  const perPage = 5
+  const [pageCount, setPageCount] = useState(0)
+  const dispatch = useDispatch();
+  const languageDefinder = useSelector((state) => state.currentPage.language)
+  const listOfBooks = useSelector((state) => state.allBooks.data)
+  const currentPage = useSelector((state) => state.currentPage.page)
 
   useEffect(() => {
-    setNewData(data);
+    dispatch(setNewListOfBooks(data));
     setPageCount(Math.ceil(data?.all_list_of_books?.total / perPage));
   }, [data]);
 
@@ -26,37 +32,41 @@ export const Home = () => {
 
   const handlePageClick = async (event) => {
     const newOffset = event.selected;
-
-    const endOffset = newOffset === 0 ? 0 : newOffset * perPage;
+    const endOffset = newOffset * perPage;
+    dispatch(pageChanger(endOffset))
     fetchMore({
-      variables: { offset: endOffset },
+      variables: {
+        offset: endOffset,
+        locale: languageDefinder
+      },
     }).then((fetchMoreResult) => {
-      setNewData(fetchMoreResult?.data)
+      dispatch(setNewListOfBooks(fetchMoreResult?.data))
     });
   };
 
   return <>
-    <Layout grid>{
-      newData?.all_list_of_books?.items?.map((el) => (
-        <QueryResult
-          error={error}
-          loading={loading}
-          data={newData}
-          key={el?.system?.uid}
-        >
-          <CardsQuery cards={el} />
-        </QueryResult>
-      ))
+    <Layout
+      grid>{
+        listOfBooks?.all_list_of_books?.items?.map((el) => (
+          <QueryResult
+            error={error}
+            loading={loading}
+            data={listOfBooks}
+            key={el?.system?.uid}
+          >
+            <CardsQuery cards={el} />
+          </QueryResult>
+        ))
 
-    }
+      }
       <div style={{ position: "absolute", bottom: "-30px" }}>
         < ReactPaginate
-          nextLabel="next >"
+          nextLabel={languageDefinder === "ru" ? "следующая >" : "next >"}
           onPageChange={handlePageClick}
           pageRangeDisplayed={2}
           marginPagesDisplayed={2}
           pageCount={pageCount}
-          previousLabel="< previous"
+          previousLabel={languageDefinder === "ru" ? "< предыдущая" : "< previous"}
           pageClassName="page-item"
           pageLinkClassName="page-link"
           previousClassName="page-item"
@@ -69,6 +79,7 @@ export const Home = () => {
           containerClassName="pagination"
           activeClassName="activation"
           renderOnZeroPageCount={null}
+          forcePage={currentPage / perPage}
         />
       </div>
     </Layout>

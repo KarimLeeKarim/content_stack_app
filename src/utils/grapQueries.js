@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const BOOKS = gql`
-query MyQuery($offset: Int) {
-  all_list_of_books(skip: $offset, limit: 5)  {
+query MyQuery($offset: Int, $locale: String) {
+  all_list_of_books(skip: $offset, limit: 5, locale: $locale)  {
     total
     items {
       url

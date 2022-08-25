@@ -1,10 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { colors, widths } from '../styles';
 import styled from '@emotion/styled';
 import logo from '../assets/book.jpeg';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { BOOKS } from '../utils/grapQueries';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNewListOfBooks } from '../store/slices/listOfBookSlice';
+import { changerLanguage } from '../store/slices/currentPage';
 
 const Header = ({ children }) => {
+  const dispatch = useDispatch();
+  const count = useSelector((state) => state.currentPage.page)
+  const languageDefinder = useSelector((state) => state.currentPage.language)
+  const { fetchMore } = useQuery(BOOKS);
+
+  const language = [
+    {
+      lang: "english",
+      key: "en-us"
+    },
+    {
+      lang: "русский",
+      key: "ru"
+    },
+  ];
+
+  const [option, setOption] = useState(languageDefinder === "ru" ? language[1].key : language[0].key);
+
+  const changeLanguage = (e) => {
+    setOption(e.target.value);
+    dispatch(changerLanguage(e.target.value))
+    fetchMore({
+      variables: {
+        locale: e.target.value,
+        offset: count
+      },
+    }).then((fetchMoreResult) => {
+      dispatch(setNewListOfBooks(fetchMoreResult?.data))
+    })
+  };
+
   return (
     <HeaderBar>
       <Container>
@@ -20,6 +56,14 @@ const Header = ({ children }) => {
               </Title>
             </HomeButton>
           </HomeLink>
+          <LanguageChangerContainer>
+            <label htmlFor="languages">{languageDefinder === "ru" ? "Выберите язык" : "Choose a language"}:</label>
+            <select value={option} name="languages" onChange={changeLanguage}>
+              {language.map((el, index) => (
+                <option key={index} value={el.key}>{el.lang}</option>
+              ))}
+            </select>
+          </LanguageChangerContainer>
         </HomeButtonContainer>
         {children}
       </Container>
@@ -52,7 +96,13 @@ const HomeLink = styled(Link)({
 
 const HomeButtonContainer = styled.div({
   display: 'flex',
+  justifyContent: 'space-between',
   flex: 1,
+});
+
+const LanguageChangerContainer = styled.div({
+  display: 'flex',
+  alignItems: 'center',
 });
 
 const HomeButton = styled.div({

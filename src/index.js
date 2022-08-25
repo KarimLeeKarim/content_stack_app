@@ -5,7 +5,8 @@ import { setContext } from '@apollo/client/link/context';
 import { RouteProvider } from './routes/RouteProvider.js';
 import { MainRoutes } from './routes/Routes';
 import GlobalStyles from './styles.js';
-
+import { store } from './store/store.js';
+import { Provider } from 'react-redux';
 
 const httpLink = createHttpLink({
   uri: `https://graphql.contentstack.com/stacks/${process.env.REACT_APP_APIKEY}?environment=${process.env.REACT_APP_ENVIRONMENT}`
@@ -37,10 +38,12 @@ const client = new ApolloClient({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <ApolloProvider client={client}>
-    <RouteProvider>
-      <GlobalStyles />
-      <MainRoutes />
-    </RouteProvider>
-  </ApolloProvider>
+  <Provider store={store}>
+    <ApolloProvider client={client}>
+      <RouteProvider>
+        <GlobalStyles />
+        <MainRoutes />
+      </RouteProvider>
+    </ApolloProvider>
+  </Provider>
 );

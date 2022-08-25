@@ -4,7 +4,7 @@ import { unit, widths } from '../styles.js';
 import Header from './header.js';
 import Footer from './footer.js';
 
-const Layout = ({ fullWidth, children, grid }) => {
+const Layout = ({ fullWidth, grid, children }) => {
   return (
     <>
       <Header />
@@ -20,7 +20,7 @@ export default Layout;
 
 /** Layout styled components */
 const PageContainer = styled.div((props) => ({
-  position:'relative',
+  position: 'relative',
   display: 'flex',
   justifyContent: props.grid ? 'center' : 'top',
   flexDirection: props.grid ? 'row' : 'column',
