@@ -2,11 +2,15 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { colors, mq } from '../styles';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { languageActivator } from '../store/slices/currentPage';
 
 const TrackCard = ({ cards }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const getUid = (card) => {
+        dispatch(languageActivator(false));
         navigate(`${card?.reference_of_landing_pageConnection?.edges[0]?.node?.system?.uid}`)
     };
 

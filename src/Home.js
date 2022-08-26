@@ -11,15 +11,13 @@ import { pageChanger } from './store/slices/currentPage.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNewListOfBooks } from './store/slices/listOfBookSlice.js';
 
-
 export const Home = () => {
   const perPage = 5;
   const { loading, error, data, fetchMore } = useQuery(BOOKS);
   const [pageCount, setPageCount] = useState(0)
   const dispatch = useDispatch();
-  const languageDefinder = useSelector((state) => state.currentPage.language)
-  const listOfBooks = useSelector((state) => state.allBooks.data)
-  const currentPage = useSelector((state) => state.currentPage.page)
+  const { language: languageDefinder, page: currentPage } = useSelector((state) => state.currentPage)
+  const { data: listOfBooks } = useSelector((state) => state.allBooks)
 
   useEffect(() => {
     dispatch(setNewListOfBooks(data));

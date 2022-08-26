@@ -11,8 +11,7 @@ import { changerLanguage } from '../store/slices/currentPage';
 
 const Header = ({ children }) => {
   const dispatch = useDispatch();
-  const count = useSelector((state) => state.currentPage.page)
-  const languageDefinder = useSelector((state) => state.currentPage.language)
+  const { page: count, languageActivator, language: languageDefinder } = useSelector((state) => state.currentPage)
   const { fetchMore } = useQuery(BOOKS);
 
   const language = [
@@ -56,14 +55,16 @@ const Header = ({ children }) => {
               </Title>
             </HomeButton>
           </HomeLink>
-          <LanguageChangerContainer>
+          {languageActivator ? <LanguageChangerContainer>
             <label htmlFor="languages">{languageDefinder === "ru" ? "Выберите язык" : "Choose a language"}:</label>
             <select value={option} name="languages" onChange={changeLanguage}>
-              {language.map((el, index) => (
-                <option key={index} value={el.key}>{el.lang}</option>
-              ))}
+              {
+                language.map((el, index) => (
+                  <option key={index} value={el.key}>{el.lang}</option>
+                ))
+              }
             </select>
-          </LanguageChangerContainer>
+          </LanguageChangerContainer> : null}
         </HomeButtonContainer>
         {children}
       </Container>

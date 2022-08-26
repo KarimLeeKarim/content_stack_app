@@ -3,11 +3,13 @@ import styled from '@emotion/styled';
 import { unit, widths } from '../styles.js';
 import Header from './header.js';
 import Footer from './footer.js';
+import { BannerBooks } from './bannerBooks.js';
 
 const Layout = ({ fullWidth, grid, children }) => {
   return (
     <>
       <Header />
+      <BannerBooks fullWidth={fullWidth} grid={grid} />
       <PageContainer fullWidth={fullWidth} grid={grid}>
         {children}
       </PageContainer>

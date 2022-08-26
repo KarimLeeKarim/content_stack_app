@@ -6,7 +6,8 @@ import {
     colors,
     IconBook,
     IconArrowLeft,
-    IconView
+    IconView,
+    IconStar
 } from '../styles';
 import ContentSection from './contentSection';
 import Layout from './layout.js';
@@ -15,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@apollo/client';
 import { BOOKS } from '../utils/grapQueries.js';
 import { setNewListOfBooks } from '../store/slices/listOfBookSlice.js';
+import { languageActivator } from '../store/slices/currentPage.js';
 
 
 export const DetailedCardPage = () => {
@@ -30,6 +32,7 @@ export const DetailedCardPage = () => {
     useEffect(() => {
         async function fetchData() {
             const result = await Stack.getSpecificEntry("landing_page_of_book", idOfBook, languageDefinder)
+            console.log(`result`, result);
             setData(result);
         };
         fetchData();
@@ -45,10 +48,12 @@ export const DetailedCardPage = () => {
         }).then((fetchMoreResult) => {
             dispatch(setNewListOfBooks(fetchMoreResult?.data))
         })
+        dispatch(languageActivator(true))
     };
 
     return <Layout grid>{
         data.map((el) => (
+            console.log(`el`, el?.star_rating),
             <ContentSection key={el?.uid}>
                 <Wrapper>
                     <IconArrowLeft onClick={getBackMaingPage} style={{ position: "absolute", left: '0', cursor: 'pointer' }} />
@@ -70,6 +75,10 @@ export const DetailedCardPage = () => {
                                 <div>
                                     <a style={{ textDecoration: 'none' }} href={`${el?.link_to_book_on_amazon?.href}`}>  Amazon</a>
                                 </div>
+                            </IconAndLabel>
+                            <IconAndLabel>
+                                <IconStar width="16px" />
+                                <p style={{ margin: "2px 0 0 10px" }}>{el?.star_rating}</p>
                             </IconAndLabel>
                         </DetailItem>
                         <DetailItem>

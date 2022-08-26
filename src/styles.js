@@ -71,6 +71,7 @@ const GlobalStyles = () => (
 export default GlobalStyles;
 
 export { IconBook } from '@apollo/space-kit/icons/IconBook';
+export { IconStar } from '@apollo/space-kit/icons/IconStar';
 export { IconView } from '@apollo/space-kit/icons/IconView';
 export { IconArrowLeft } from '@apollo/space-kit/icons/IconArrowLeft';
 export { Button } from '@apollo/space-kit/Button';

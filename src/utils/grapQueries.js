@@ -44,5 +44,30 @@ query MyQuery($offset: Int, $locale: String) {
       }
     }
   }
+  all_books_banner(locale: $locale)  {
+    items {
+      title
+      group {
+        title_of_book
+        description_of_book {
+          json
+        }
+        learn_more {
+          title
+        }
+        picture_of_bookConnection {
+          edges {
+            node {
+              url
+              title
+            }
+          }
+        }
+      }
+      system {
+        uid
+      }
+    }
+  }
 }
 `;
