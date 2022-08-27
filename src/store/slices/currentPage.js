@@ -7,7 +7,7 @@ const initialState = {
     languageActivator: true
 }
 
-export const currentPageSlice = createSlice({
+export const pageLanguageSlice = createSlice({
     name: 'currentPage',
     initialState,
     reducers: {
@@ -23,6 +23,6 @@ export const currentPageSlice = createSlice({
     },
 })
 
-export const { pageChanger, changerLanguage, languageActivator } = currentPageSlice.actions
+export const { pageChanger, changerLanguage, languageActivator } = pageLanguageSlice.actions
 
-export default currentPageSlice.reducer
+export default pageLanguageSlice.reducer
