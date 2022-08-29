@@ -19,6 +19,7 @@ import { setNewListOfBooks } from '../store/slices/listOfBookSlice.js';
 import { languageActivator } from '../store/slices/currentPage.js';
 
 
+
 export const DetailedCardPage = () => {
     const dispatch = useDispatch();
     const location = useLocation();
