@@ -33,7 +33,6 @@ export const DetailedCardPage = () => {
     useEffect(() => {
         async function fetchData() {
             const result = await Stack.getSpecificEntry("landing_page_of_book", idOfBook, languageDefinder)
-            console.log(`result`, result);
             setData(result);
         };
         fetchData();
@@ -54,7 +53,6 @@ export const DetailedCardPage = () => {
 
     return <Layout grid>{
         data.map((el) => (
-            console.log(`el`, el?.star_rating),
             <ContentSection key={el?.uid}>
                 <Wrapper>
                     <IconArrowLeft onClick={getBackMaingPage} style={{ position: "absolute", left: '0', cursor: 'pointer' }} />

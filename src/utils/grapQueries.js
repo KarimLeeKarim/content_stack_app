@@ -47,25 +47,40 @@ query MyQuery($offset: Int, $locale: String) {
   all_books_banner(locale: $locale)  {
     items {
       title
-      group {
-        title_of_book
-        description_of_book {
-          json
-        }
-        learn_more {
-          title
-        }
-        picture_of_bookConnection {
-          edges {
-            node {
-              url
-              title
+      content_block {
+        ... on BooksBannerContentBlockMedia {
+          __typename
+          media {
+            for_the_media
+            information {
+              json
             }
           }
         }
-      }
-      system {
-        uid
+        ... on BooksBannerContentBlockBooksBanner {
+          __typename
+          books_banner {
+            main_title
+            group {
+              title_of_book
+              description_of_book {
+                json
+              }
+              learn_more {
+                title
+              }
+              picture_of_bookConnection {
+                edges {
+                  node {
+                    filename
+                    url
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

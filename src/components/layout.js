@@ -4,12 +4,14 @@ import { unit, widths } from '../styles.js';
 import Header from './header.js';
 import Footer from './footer.js';
 import { BannerBooks } from './bannerBooks.js';
+import { useLocation } from "react-router-dom";
 
 const Layout = ({ fullWidth, grid, children }) => {
+  const location = useLocation();
   return (
     <>
       <Header />
-      <BannerBooks fullWidth={fullWidth} grid={grid} />
+      {location.pathname === "/books" ? < BannerBooks fullWidth={fullWidth} grid={grid} /> : null}
       <PageContainer fullWidth={fullWidth} grid={grid}>
         {children}
       </PageContainer>
